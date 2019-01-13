@@ -1,26 +1,24 @@
 <?php
 declare(strict_types=1);
 
-
 namespace TutuRu\Tests\HostAliasResolver;
 
-use TutuRu\Config\ConfigContainer;
+use TutuRu\Config\JsonConfig\MutableJsonConfig;
 use TutuRu\HostAliasResolver\HostAliasResolverException;
 use TutuRu\HostAliasResolver\HostAliasResolver;
 use TutuRu\HostAliasResolver\InvalidUriException;
 use PHPUnit\Framework\TestCase;
-use TutuRu\Tests\Config\JsonConfig\JsonConfigFactory;
 
 class HostAliasResolverTest extends TestCase
 {
-    /** @var ConfigContainer */
+    /** @var MutableJsonConfig */
     private $config;
 
 
     public function setUp()
     {
         parent::setUp();
-        $this->config = JsonConfigFactory::createConfig(__DIR__ . '/config/app.json');
+        $this->config = new MutableJsonConfig(__DIR__ . '/config/app.json');
     }
 
 
@@ -29,8 +27,8 @@ class HostAliasResolverTest extends TestCase
      */
     public function testRender(string $expected, string $uri)
     {
-        $this->config->setApplicationValue('host_alias_resolver.rus.desktop.mainpage', 'main.host.com');
-        $this->config->setApplicationValue('env.domain', 'internal.host.com');
+        $this->config->setValue('host_alias_resolver.rus.desktop.mainpage', 'main.host.com');
+        $this->config->setValue('env.domain', 'internal.host.com');
 
         $controller = new HostAliasResolver($this->config);
         $this->assertEquals($expected, $controller->resolve($uri));
@@ -99,7 +97,7 @@ class HostAliasResolverTest extends TestCase
      */
     public function testRenderException(string $uri, string $expectedException)
     {
-        $this->config->setApplicationValue('host_alias_resolver.rus.desktop.mainpage', 'main.host.com');
+        $this->config->setValue('host_alias_resolver.rus.desktop.mainpage', 'main.host.com');
 
         $this->expectException($expectedException);
 
@@ -122,8 +120,8 @@ class HostAliasResolverTest extends TestCase
      */
     public function testGetHostByAlias(string $alias, string $expectedHost)
     {
-        $this->config->setApplicationValue('host_alias_resolver.rus.desktop.mainpage', 'main.host.com');
-        $this->config->setApplicationValue('env.domain', 'internal.host.com');
+        $this->config->setValue('host_alias_resolver.rus.desktop.mainpage', 'main.host.com');
+        $this->config->setValue('env.domain', 'internal.host.com');
 
         $resolver = new HostAliasResolver($this->config);
         $this->assertEquals($expectedHost, $resolver->getHostByAlias($alias));
@@ -151,7 +149,7 @@ class HostAliasResolverTest extends TestCase
 
     public function testGetHostByAliasException()
     {
-        $this->config->setApplicationValue('host_alias_resolver.rus.desktop.mainpage', 'main.host.com');
+        $this->config->setValue('host_alias_resolver.rus.desktop.mainpage', 'main.host.com');
 
         $this->expectException(HostAliasResolverException::class);
         $resolver = new HostAliasResolver($this->config);

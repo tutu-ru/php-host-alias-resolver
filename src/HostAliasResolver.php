@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TutuRu\HostAliasResolver;
 
-use TutuRu\Config\ConfigContainer;
+use TutuRu\Config\ConfigInterface;
 
 class HostAliasResolver
 {
@@ -12,11 +12,11 @@ class HostAliasResolver
     private const REGISTRY_DEFAULT_SCHEME = 'https';
     private const DYNAMIC_DEFAULT_SCHEME = 'http';
 
-    /** @var ConfigContainer */
+    /** @var ConfigInterface */
     private $config;
 
 
-    public function __construct(ConfigContainer $config)
+    public function __construct(ConfigInterface $config)
     {
         $this->config = $config;
     }
