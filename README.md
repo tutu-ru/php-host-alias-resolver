@@ -9,9 +9,10 @@
 
 Конфигурационные ноды:
 * `infrastrucrute.env.domain` - основной домен для сервисов
-* `infrastructure.host_alias_resolver` - хранилище алиасов хостов и адресов ресурсов
+* `infrastructure.host_alias_resolver` - хранилище алиасов хостов и адресов ресурсов, например:
   * `rus.desktop.mainpage` - главная страница десктопной русской версии сайта
-  * `services.ServiceName` - адрес сервиса ServiceName
+  * `external.partnerApi` - адрес партнерского апи
+  * `internal.ourApi` - адрес внутреннего ресурса
 
 ## Инициализация
 
@@ -24,17 +25,9 @@ print $resolver->getHostByAlias('services.partnerApi');
 ```
 
 ## Особенности использования
-Метод `getHostByAlias` получает ноду в прямом порядке:
-```php
-// services.partnerApi = https://somerestapi.com
+Алиасы надо задавать в обратном порядке
 
-print $resolver->getHostByAlias('services.partnerApi');
-// выведет https://somerestapi.com
-```
-*Если ноды для алиаса нет - вернется `getWithEnvDomain` для того же алиаса.*
-
-
-Для метода `resolve` алиасы надо задавать в обратном порядке:
+resolve:
 ```php
 // rus.desktop.mainpage = main.host.com
 
@@ -42,3 +35,14 @@ print $resolver->resolve('mainpage.desktop.rus/query?arg=1#hash');
 // выведет https://main.host.com/query?arg=1#hash
 // https:// в ноде нет, resolve подставляет его сам 
 ``` 
+
+getHostByAlias:
+```php
+// external.partnerApi = https://somerestapi.com
+
+print $resolver->getHostByAlias('partnerApi.external');
+// выведет https://somerestapi.com
+```
+*Если ноды для алиаса нет - вернется `getWithEnvDomain` для того же алиаса.*
+
+

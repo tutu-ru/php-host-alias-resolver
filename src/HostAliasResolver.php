@@ -58,7 +58,8 @@ class HostAliasResolver
 
     public function getHostByAlias(string $alias): string
     {
-        $domain = $this->getDomainForAlias($alias);
+        $hostAlias = $this->reverseHostParts($alias);
+        $domain = $this->getDomainForAlias($hostAlias);
         if (is_null($domain)) {
             $domain = $this->getWithEnvDomain($alias);
         }
