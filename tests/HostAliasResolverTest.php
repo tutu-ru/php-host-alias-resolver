@@ -136,7 +136,7 @@ class HostAliasResolverTest extends TestCase
                 'expectedHost' => 'test.internal.host.com',
             ],
             [
-                'alias'        => 'rus.desktop.mainpage',
+                'alias'        => 'mainpage.desktop.rus',
                 'expectedHost' => 'main.host.com',
             ],
             [
